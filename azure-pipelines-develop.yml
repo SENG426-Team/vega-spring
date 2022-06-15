@@ -3,7 +3,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-pr: none
 trigger:
 - develop
 
@@ -11,11 +10,6 @@ resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'd3b256ea-038f-4679-8496-ad87ba64b3fb'
-  imageRepository: 'vegaspringgit'
-  containerRegistry: 'venusdevelopregistry.azurecr.io'
-
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
@@ -44,34 +38,4 @@ stages:
             name: 'Azure-Builds'
             messageType: 'content'
             content: 'Azure Backend Pipeline Build Failed During The Test and Scan Stage On Develop Branch'
-          condition: failed()
-  - stage: Build
-    condition: succeeded()
-    displayName: Build and Push Stage
-    jobs:
-      - job: Build
-        steps:
-        - task: DockerCompose@0
-          inputs:
-            containerregistrytype: 'Azure Container Registry'
-            azureSubscription: 'Azure for Students (57e6bbf2-2cd2-494f-b00c-fe76b431f0f1)'
-            azureContainerRegistry: '{"loginServer":"venusdevelopregistry.azurecr.io", "id" : "/subscriptions/57e6bbf2-2cd2-494f-b00c-fe76b431f0f1/resourceGroups/venus-spring/providers/Microsoft.ContainerRegistry/registries/venusdevelopregistry"}'
-            dockerComposeFile: '**/docker-compose.yml'
-            action: 'Build services'
-            includeLatestTag: true
-        - task: DockerCompose@0
-          inputs:
-            containerregistrytype: 'Azure Container Registry'
-            azureSubscription: 'Azure for Students (57e6bbf2-2cd2-494f-b00c-fe76b431f0f1)'
-            azureContainerRegistry: '{"loginServer":"venusdevelopregistry.azurecr.io", "id" : "/subscriptions/57e6bbf2-2cd2-494f-b00c-fe76b431f0f1/resourceGroups/venus-spring/providers/Microsoft.ContainerRegistry/registries/venusdevelopregistry"}'
-            dockerComposeFile: '**/docker-compose.yml'
-            action: 'Push services'
-            includeLatestTag: true
-        - task: ado-discord-webhook@1
-          inputs:
-            channelId: '984576484150738944'
-            webhookKey: 'BQwMEmgOqbYQfibgD-qk3VFzSPx_MUKy9_CvdbYGGJw0_rSkmM5HOGmWXQVb28MUNAJj'
-            name: 'Azure-Builds'
-            messageType: 'content'
-            content: 'Azure Backend Pipeline Build Failed During The Build And Push Stage On Develop Branch'
           condition: failed()
