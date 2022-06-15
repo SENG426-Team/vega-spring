@@ -23,27 +23,10 @@ pool:
   vmImage: $(vmImageName)
 stages:
   - stage: Test
-    displayName: Test and Scan Stage
+    displayName: Test
     jobs:
       - job: Test
         steps:
-        - task: SonarQubePrepare@5
-          inputs:
-            SonarQube: 'Self-Hosted SonarQube'
-            scannerMode: 'Other'
-            extraProperties: |
-              # Additional properties that will be passed to the scanner,
-              # Put one key=value per line, example:
-              # sonar.exclusions=**/*.bin
-              sonar.projectKey=vega-spring
-        - task: ado-discord-webhook@1
-          inputs:
-            channelId: '984576484150738944'
-            webhookKey: 'BQwMEmgOqbYQfibgD-qk3VFzSPx_MUKy9_CvdbYGGJw0_rSkmM5HOGmWXQVb28MUNAJj'
-            name: 'Azure-Builds'
-            messageType: 'content'
-            content: 'Azure Backend Pipeline Build Failed During The Scan Config Stage On Develop Branch'
-          condition: failed()
         - task: Maven@3
           inputs:
             mavenPomFile: 'pom.xml'
@@ -53,7 +36,7 @@ stages:
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
-            sonarQubeRunAnalysis: true
+            sonarQubeRunAnalysis: false
         - task: ado-discord-webhook@1
           inputs:
             channelId: '984576484150738944'
@@ -61,17 +44,6 @@ stages:
             name: 'Azure-Builds'
             messageType: 'content'
             content: 'Azure Backend Pipeline Build Failed During The Test and Scan Stage On Develop Branch'
-          condition: failed()
-        - task: SonarQubePublish@5
-          inputs:
-            pollingTimeoutSec: '300'
-        - task: ado-discord-webhook@1
-          inputs:
-            channelId: '984576484150738944'
-            webhookKey: 'BQwMEmgOqbYQfibgD-qk3VFzSPx_MUKy9_CvdbYGGJw0_rSkmM5HOGmWXQVb28MUNAJj'
-            name: 'Azure-Builds'
-            messageType: 'content'
-            content: 'Azure Backend Pipeline Build Failed During The Publish Scan Results Stage On Develop Branch'
           condition: failed()
   - stage: Build
     condition: succeeded()
