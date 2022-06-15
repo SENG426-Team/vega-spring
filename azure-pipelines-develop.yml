@@ -88,8 +88,7 @@ stages:
             appType: 'webAppContainer'
             WebAppName: 'venus-spring-develop'
             DockerNamespace: 'venusdevelopregistry.azurecr.io'
-            DockerRepository: 'vegaspringgit'
-            DockerImageTag: 'latest'
+            DockerRepository: 'venus/beeple'
         - task: ado-discord-webhook@1
           inputs:
             channelId: '984576484150738944'
