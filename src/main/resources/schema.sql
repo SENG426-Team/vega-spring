@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS userinfo (
 -- CREATE UNIQUE  INDEX ix_auth_username on authorities (username,authority);
 
 CREATE TABLE IF NOT EXISTS secrets (
-    secret_id INTEGER NOT NULL AUTO_INCREMENT,
+    secret_id INTEGER NOT NULL,
     username VARCHAR(50) NOT NULL,
     date_created DATE NOT NULL,
     secret LONGBLOB NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS secrets (
 );
 
 CREATE TABLE IF NOT EXISTS shared_secrets (
-    shared_id INTEGER NOT NULL AUTO_INCREMENT,
+    shared_id INTEGER NOT NULL,
     secret_id INTEGER NOT NULL,
     sender VARCHAR(50) NOT NULL,
     recipient VARCHAR(50) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS shared_secrets (
     FOREIGN KEY (recipient) REFERENCES users(username)
 );
 
-CREATE TABLE IF NOT EXISTS secrets (
+CREATE TABLE IF NOT EXISTS keys (
     secret_id INTEGER NOT NULL,
     secret_key VARCHAR(100) NOT NULL,
     PRIMARY KEY (secret_id),
