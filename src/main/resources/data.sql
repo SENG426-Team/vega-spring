@@ -10,7 +10,7 @@ INSERT INTO users (username, password, enabled) values
     ('angelinacosta@venus.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a',1),
     ('brijeshgupta@venus.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a',1),
     ('amyfofana@venus.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a',1),
-    ('testuser1@venus.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a', 1);
+    ('testuser1@venus.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a', 1),
     ('testuser2@venus.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a', 1);
 
 
@@ -25,7 +25,7 @@ INSERT INTO authorities (username, authority) values
     ('angelinacosta@venus.com', 'ROLE_STAFF'),
     ('brijeshgupta@venus.com', 'ROLE_STAFF'),
     ('amyfofana@venus.com', 'ROLE_STAFF'),
-    ('testuser1@venus.com', 'ROLE_USER');
+    ('testuser1@venus.com', 'ROLE_USER'),
     ('testuser2@venus.com', 'ROLE_USER');
 
 INSERT INTO userinfo (username, firstname, lastname) values
@@ -38,5 +38,5 @@ INSERT INTO userinfo (username, firstname, lastname) values
     ('angelinacosta@venus.com', 'Angelina', 'Costa'),
     ('brijeshgupta@venus.com', 'Brijesh', 'Gupta'),
     ('amyfofana@venus.com', 'Amy', 'Fofana'),
-    ('testuser1@venus.com', 'testuser1', 'testuser1');
+    ('testuser1@venus.com', 'testuser1', 'testuser1'),
     ('testuser2@venus.com', 'testuser2', 'testuser2');

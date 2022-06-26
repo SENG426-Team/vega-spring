@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 
 @RestController
+@RequestMapping("/secret")
 public class VaultController {
 
     private static int common_secret_id = 0;
