@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS userinfo (
 CREATE TABLE IF NOT EXISTS secrets (
     secret_id INTEGER NOT NULL,
     username VARCHAR(50) NOT NULL,
-    date_created DATE NOT NULL,
+    date_created VARCHAR(20) NOT NULL,
     secret LONGBLOB NOT NULL,
     PRIMARY KEY (secret_id),
     FOREIGN KEY (username) REFERENCES users(username)
