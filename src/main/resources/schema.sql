@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS userinfo;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS secrets;
 DROP TABLE IF EXISTS shared_secrets;
-DROP TABLE IF EXISTS keys;
+DROP TABLE IF EXISTS secret_keys;
 
 CREATE TABLE IF NOT EXISTS users (
   username VARCHAR(50) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS shared_secrets (
     FOREIGN KEY (recipient) REFERENCES users(username)
 );
 
-CREATE TABLE IF NOT EXISTS keys (
+CREATE TABLE IF NOT EXISTS secret_keys (
     secret_id INTEGER NOT NULL,
     secret_key VARCHAR(100) NOT NULL,
     PRIMARY KEY (secret_id),

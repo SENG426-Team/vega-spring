@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="keys")
+@Table(name="secret_keys")
 public class Keys {
 
     @Id
