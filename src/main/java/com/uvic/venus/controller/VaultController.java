@@ -1,13 +1,8 @@
 package com.uvic.venus.controller;
 
-import com.uvic.venus.model.UserInfo;
 import com.uvic.venus.repository.SecretElementDAO;
-import com.uvic.venus.repository.SecretKeyDAO;
 import com.uvic.venus.repository.SharedSecretDAO;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,13 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.uvic.venus.model.Secrets;
 import com.uvic.venus.model.SharedSecrets;
-import com.uvic.venus.model.Keys;
 
 import javax.sql.DataSource;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 @RestController
@@ -83,7 +73,6 @@ public class VaultController {
     }
 
     // read secrets - get
-    //TODO
     @RequestMapping(value = "/read_secret", method = RequestMethod.GET)
     public ResponseEntity<?> readSecretFromVault(@RequestBody Secrets secrets) {
         System.out.println("Entered into readSecretFromVault");
