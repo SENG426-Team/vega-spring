@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS secrets (
     secret_id INTEGER NOT NULL,
     username VARCHAR(50) NOT NULL,
     date_created VARCHAR(20) NOT NULL,
-    secret LONGBLOB NOT NULL,
+    secret VARCHAR(50) NOT NULL,
     PRIMARY KEY (secret_id),
     FOREIGN KEY (username) REFERENCES users(username)
 );
