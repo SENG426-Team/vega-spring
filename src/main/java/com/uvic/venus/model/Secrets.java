@@ -13,9 +13,9 @@ public class Secrets {
     private int secret_id;
     private String username;
     private String date_created;
-    private byte[] secret;
+    private String secret;
 
-    public Secrets (int secret_id, String username, String date_created, byte[] secret) {
+    public Secrets (int secret_id, String username, String date_created, String secret) {
         this.secret_id = secret_id;
         this.username = username;
         this.date_created = date_created;
@@ -50,11 +50,11 @@ public class Secrets {
         this.date_created = date_created;
     }
 
-    public byte[] getSecret() {
+    public String getSecret() {
         return this.secret;
     }
 
-    public void setSecret(byte[] secret) {
+    public void setSecret(String secret) {
         this.secret = secret;
     }
 
