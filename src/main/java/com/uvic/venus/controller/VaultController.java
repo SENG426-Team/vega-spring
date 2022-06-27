@@ -40,7 +40,8 @@ public class VaultController {
 
         storageService.store(file);
 
-        Secrets secret = new Secrets(common_secret_id++, secrets.getUsername(), secrets.getDate_created(), secrets.getSecret());
+        Secrets secret = new Secrets(common_secret_id, secrets.getUsername(), secrets.getDate_created(), secrets.getSecret());
+        common_secret_id++;
         System.out.println(secrets);
         secretElementDAO.save(secret);
 
@@ -89,7 +90,8 @@ public class VaultController {
     public ResponseEntity<?> allowSecretToBeShared(@RequestBody SharedSecrets sharedSecrets) {
         System.out.println("Entered into allowSecretToBeShared");
 
-        SharedSecrets sharing = new SharedSecrets(common_shared_id++, sharedSecrets.getSecret_id(), sharedSecrets.getSender(), sharedSecrets.getRecipient());
+        SharedSecrets sharing = new SharedSecrets(common_shared_id, sharedSecrets.getSecret_id(), sharedSecrets.getSender(), sharedSecrets.getRecipient());
+        common_shared_id++;
         System.out.println(sharing);
         sharedSecretDAO.save(sharing);
 
