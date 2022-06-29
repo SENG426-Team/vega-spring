@@ -1,14 +1,18 @@
 package com.uvic.venus.controller;
-
 import com.uvic.venus.repository.SecretElementDAO;
 import com.uvic.venus.repository.SharedSecretDAO;
 import com.uvic.venus.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.boot.json.JsonParser;
+import org.springframework.boot.json.JsonParserFactory;
 import com.uvic.venus.model.Secrets;
 import com.uvic.venus.model.SharedSecrets;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Map;
+import java.io.*;
 
 import javax.sql.DataSource;
 
@@ -34,16 +38,30 @@ public class VaultController {
 
 
     // add item to vault - post
+    // For JSON Parser: http://www.masterspringboot.com/web/rest-services/parsing-json-in-spring-boot-using-jsonparser/
     @RequestMapping(value = "/add_secret", method = RequestMethod.POST)
-    public ResponseEntity<?> addSecretToVault(@RequestBody Secrets secrets, @RequestParam("file") MultipartFile file) {
-        System.out.println("Entered into addSecretToVault");
+    public ResponseEntity<?> addSecretToVault(@RequestBody String jsonString) {
+        
+        // Parse JSON String to Receive fields 
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        Map <String, Object> map = parser.parseMap(jsonString);
 
-        storageService.store(file);
-
-        Secrets secret = new Secrets(common_secret_id, secrets.getUsername(), secrets.getDate_created(), secrets.getSecret());
+        
+        // Create the secret in the Database
+        String username = map.get("username").toString();
+        String date_created = map.get("date_created").toString();
+        String file_name = map.get("file_name").toString();
+        Secrets secret = new Secrets(common_secret_id, username, date_created, file_name);
         common_secret_id++;
-        System.out.println(secrets);
         secretElementDAO.save(secret);
+
+        // Create the File with the encrypted information
+        String encrypted_file_name = file_name.split("\\.")[0] + ".encrypted";
+        byte[] encrypted_bytes = map.get("enc")
+                                    .toString()
+                                    .getBytes();
+        MultipartFile encrypted_file = new MockMultipartFile(encrypted_file_name, encrypted_bytes);
+        // storageService.store(encrypted_file);
 
         return ResponseEntity.ok("Secret Stored Successfully");
 
@@ -70,7 +88,7 @@ public class VaultController {
         // since the ID and date_created will have been the same as the existing secret,
         // this effectively changes the existing secret, while actually deleting the existing
         // secret and adding a new one
-        Secrets secret = new Secrets(secrets.getSecret_id(), secrets.getUsername(), secrets.getDate_created(), secrets.getSecret());
+        Secrets secret = new Secrets(secrets.getSecret_id(), secrets.getUsername(), secrets.getDate_created(), secrets.getFile_name());
         System.out.println(secrets);
         secretElementDAO.save(secret);
 
@@ -82,7 +100,7 @@ public class VaultController {
     public ResponseEntity<?> readSecretFromVault(@RequestBody Secrets secrets) {
         System.out.println("Entered into readSecretFromVault");
 
-        return ResponseEntity.ok(secretElementDAO.findById(Integer.toString(secrets.getSecret_id())).get().getSecret());
+        return ResponseEntity.ok(secretElementDAO.findById(Integer.toString(secrets.getSecret_id())).get().getFile_name());
     }
 
     // allow share permissions - post
