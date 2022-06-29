@@ -12,6 +12,7 @@ import com.uvic.venus.model.SharedSecrets;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
+import java.util.List;
 import java.io.*;
 
 import javax.sql.DataSource;
@@ -37,6 +38,18 @@ public class VaultController {
     StorageService storageService;
 
 
+    @RequestMapping(value = "/fetch_secrets", method = RequestMethod.POST)
+    public ResponseEntity<?> readSecretFromVault(@RequestBody String usernameObject) {
+        
+        // Parse JSON String to Receive fields 
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        Map <String, Object> data_map = parser.parseMap(usernameObject);
+
+        String username = data_map.get("username").toString();
+        List<Secrets> secrets = secretElementDAO.findSecretsByUsername(username);
+        return ResponseEntity.ok(secrets);
+    }
+
     // add item to vault - post
     // For JSON Parser: http://www.masterspringboot.com/web/rest-services/parsing-json-in-spring-boot-using-jsonparser/
     @RequestMapping(value = "/add_secret", method = RequestMethod.POST)
@@ -55,13 +68,14 @@ public class VaultController {
         common_secret_id++;
         secretElementDAO.save(secret);
 
-        // Create the File with the encrypted information
-        String encrypted_file_name = file_name.split("\\.")[0] + ".encrypted";
-        byte[] encrypted_bytes = map.get("enc")
-                                    .toString()
-                                    .getBytes();
-        MultipartFile encrypted_file = new MockMultipartFile(encrypted_file_name, encrypted_bytes);
-        // storageService.store(encrypted_file);
+        /* Create the File with the encrypted information
+           String encrypted_file_name = file_name.split("\\.")[0] + ".encrypted";
+           byte[] encrypted_bytes = map.get("enc")
+                                       .toString()
+                                       .getBytes();
+           MultipartFile encrypted_file = new MockMultipartFile(encrypted_file_name, encrypted_bytes);
+           storageService.store(encrypted_file);
+        */   
 
         return ResponseEntity.ok("Secret Stored Successfully");
 
