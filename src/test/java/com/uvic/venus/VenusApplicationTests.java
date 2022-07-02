@@ -56,6 +56,8 @@ class VenusApplicationTests {
 		// Select 'STAFF'
 		driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[5]/select/option[2]")).click();
 
+		// TODO: add select USER
+
 		logout();
 	}
 
