@@ -25,6 +25,7 @@ INSERT INTO authorities (username, authority) values
     ('angelinacosta@venus.com', 'ROLE_STAFF'),
     ('brijeshgupta@venus.com', 'ROLE_STAFF'),
     ('amyfofana@venus.com', 'ROLE_STAFF'),
+    ('testuser@venus.com', 'ROLE_USER'),
     ('testuser1@venus.com', 'ROLE_USER'),
     ('testuser2@venus.com', 'ROLE_USER');
 
@@ -38,5 +39,6 @@ INSERT INTO userinfo (username, firstname, lastname) values
     ('angelinacosta@venus.com', 'Angelina', 'Costa'),
     ('brijeshgupta@venus.com', 'Brijesh', 'Gupta'),
     ('amyfofana@venus.com', 'Amy', 'Fofana'),
+    ('testuser@venus.com', 'testuser', 'testuser'),
     ('testuser1@venus.com', 'testuser1', 'testuser1'),
     ('testuser2@venus.com', 'testuser2', 'testuser2');
