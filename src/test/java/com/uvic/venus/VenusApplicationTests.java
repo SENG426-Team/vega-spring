@@ -187,6 +187,57 @@ class VenusApplicationTests {
 		logout();
 	}
 
+		/* Scenario:  User wants to create a secret */
+		@Test
+		@Order(6)
+		void vegaVaultSecretCreation() throws InterruptedException {
+	
+			userLogin();
+
+			driver.get("http://localhost:3000/vegavault");
+
+			WebElement createScecretInputBox = driver.findElement(By.xpath("//*[@id='formSecret']"));
+			createScecretInputBox.sendKeys("secret 1");
+
+			WebElement createSecretButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[1]/div/button"));
+			createSecretButton.click();
+
+			Thread.sleep(1000);
+
+			WebElement secret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[2]"));			
+
+			assertTrue(secret.getText().toString().equals("secret 1"));
+	
+			logout();
+		}
+
+		@Test
+		@Order(7)
+		void vegaVaultSecretDeletion() throws InterruptedException {
+
+			userLogin();
+
+			driver.get("http://localhost:3000/vegavault");
+
+			WebElement createScecretInputBox = driver.findElement(By.xpath("//*[@id='formSecret']"));
+			createScecretInputBox.sendKeys("secret 2");
+
+			WebElement createSecretButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[1]/div/button"));
+			createSecretButton.click();
+
+			Thread.sleep(1000);
+
+			WebElement deleteButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[4]/button"));			
+			deleteButton.click();
+
+			Thread.sleep(1000);
+	
+			assertTrue(driver.findElements(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[2]")).isEmpty());
+
+			logout();
+
+		}
+
 	@AfterAll
 	void tearDown() throws InterruptedException{
 		if(driver!=null){
