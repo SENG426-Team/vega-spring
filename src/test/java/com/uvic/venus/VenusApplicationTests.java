@@ -2,6 +2,10 @@ package com.uvic.venus;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,20 +41,15 @@ class VenusApplicationTests {
 
 	public void logout() {
 
-		WebElement logoutPage = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-		logoutPage.click();
+		driver.get("http://localhost:3000/account");		
 
 		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
 		submitButton.click();
 	}
 
-	/* Scenario: Admin wants to change a registered user of type User to type Staff */
-	@Test
-	@Order(1)
-	void AdminCanChangeRoletoStaff() throws InterruptedException {
+	public void adminLogin() throws InterruptedException {
 
-		WebElement loginPage =  driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-		loginPage.click();
+		driver.get("http://localhost:3000/login");
 
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
 		usernameInputBox.sendKeys("admin@venus.com");
@@ -63,9 +62,52 @@ class VenusApplicationTests {
 
 		// Wait for page load
 		Thread.sleep(1000);
+	}
 
-		WebElement adminPage = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/a[7]"));
-		adminPage.click();
+	public void userLogin() throws InterruptedException {
+
+		driver.get("http://localhost:3000/login");
+
+		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
+		usernameInputBox.sendKeys("testuser@venus.com");
+
+		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
+		passwordInputBox.sendKeys("pass");
+
+		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
+		submitButton.click();
+
+		// Wait for load
+		Thread.sleep(1000);
+	}
+
+	public void staffLogin() throws InterruptedException {
+
+		driver.get("http://localhost:3000/login");
+
+		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
+		usernameInputBox.sendKeys("jonoliver@venus.com");
+
+		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
+		passwordInputBox.sendKeys("pass");
+
+		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
+		submitButton.click();
+
+		// Wait for load
+		Thread.sleep(1000);
+	}
+
+	/* Scenario: Admin wants to change a registered user of type User to type Staff */
+	@Test
+	@Order(1)
+	void AdminCanChangeRoletoStaff() throws InterruptedException {
+
+		adminLogin();
+
+		driver.get("http://localhost:3000/adminpanel");
+		
+		Thread.sleep(1000);
 
 		WebElement dropDownList = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[5]/select"));
 		dropDownList.click();
@@ -81,23 +123,11 @@ class VenusApplicationTests {
 	@Order(2)
 	void AdminCanChangeRoletoUser() throws InterruptedException {
 
-		WebElement loginPage =  driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-		loginPage.click();
+		adminLogin();
 
-		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
-		usernameInputBox.sendKeys("admin@venus.com");
-
-		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
-		passwordInputBox.sendKeys("pass");
-
-		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
-		submitButton.click();
-
-		// Wait for page load
+		driver.get("http://localhost:3000/adminpanel");
+		
 		Thread.sleep(1000);
-
-		WebElement adminPage = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/a[7]"));
-		adminPage.click();
 
 		WebElement dropDownList = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[5]/select"));
 		dropDownList.click();
@@ -113,23 +143,13 @@ class VenusApplicationTests {
 	@Order(3)
 	void UserCannotChangeRole() throws InterruptedException {
 
-		WebElement loginPage =  driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-		loginPage.click();
+		userLogin();
 
-		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
-		usernameInputBox.sendKeys("testuser@venus.com");
+		WebElement navBar = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div"));
 
-		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
-		passwordInputBox.sendKeys("pass");
+		ArrayList<String> navElements = new ArrayList<String>(Arrays.asList(navBar.getText().split("\n")));
 
-		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
-		submitButton.click();
-
-		// Wait for load
-		Thread.sleep(1000);
-
-		// Check that admin page for changing user roles is not present
-		assertTrue(driver.findElements(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/a[7]")).isEmpty());
+		assertFalse(navElements.contains("Admin"));
 
 		logout();
 	}
@@ -139,23 +159,29 @@ class VenusApplicationTests {
 	@Order(4)
 	void StaffCannotChangeRole() throws InterruptedException {
 
-		WebElement loginPage =  driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/div/a"));
-		loginPage.click();
+		staffLogin();
 
-		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
-		usernameInputBox.sendKeys("testuser@venus.com");
+		WebElement navBar = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div"));
 
-		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
-		passwordInputBox.sendKeys("pass");
+		ArrayList<String> navElements = new ArrayList<String>(Arrays.asList(navBar.getText().split("\n")));
 
-		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
-		submitButton.click();
+		assertFalse(navElements.contains("Admin"));
 
-		// Wait for load
-		Thread.sleep(1000);
+		logout();
+	}
 
-		// Check that admin page for changing user roles is not present
-		assertTrue(driver.findElements(By.id("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div/a[7]")).isEmpty());
+	/* Scenario:  User wants to access resource upload */
+	@Test
+	@Order(5)
+	void UserCannotAccessResourceUpload() throws InterruptedException {
+
+		userLogin();
+
+		WebElement navBar = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div"));
+
+		ArrayList<String> navElements = new ArrayList<String>(Arrays.asList(navBar.getText().split("\n")));
+
+		assertFalse(navElements.contains("Resources"));
 
 		logout();
 	}
