@@ -18,6 +18,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
+// This file includes test cases related to the Admin change role feature
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class VenusApplicationTests {
@@ -41,7 +44,7 @@ class VenusApplicationTests {
 		submitButton.click();
 	}
 
-
+	/* Scenario: Admin wants to change a registered user of type User to type Staff */
 	@Test
 	@Order(1)
 	void AdminCanChangeRoletoStaff() throws InterruptedException {
@@ -73,6 +76,7 @@ class VenusApplicationTests {
 		logout();
 	}
 
+	/* Scenario: Admin wants to change a registered user of type Staff to type User */
 	@Test
 	@Order(2)
 	void AdminCanChangeRoletoUser() throws InterruptedException {
@@ -104,6 +108,7 @@ class VenusApplicationTests {
 		logout();
 	}
 
+	/* Scenario: User wants to change another users role */
 	@Test
 	@Order(3)
 	void UserCannotChangeRole() throws InterruptedException {
@@ -129,6 +134,7 @@ class VenusApplicationTests {
 		logout();
 	}
 
+	/* Scenario: Staff wants to change another users role */
 	@Test
 	@Order(4)
 	void StaffCannotChangeRole() throws InterruptedException {
