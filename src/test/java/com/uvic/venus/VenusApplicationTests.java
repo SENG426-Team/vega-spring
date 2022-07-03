@@ -77,7 +77,7 @@ class VenusApplicationTests {
 		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
 		submitButton.click();
 
-		// Wait for load
+		// Wait for page load
 		Thread.sleep(1000);
 	}
 
@@ -94,7 +94,7 @@ class VenusApplicationTests {
 		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
 		submitButton.click();
 
-		// Wait for load
+		// Wait for page load
 		Thread.sleep(1000);
 	}
 
@@ -106,7 +106,8 @@ class VenusApplicationTests {
 		adminLogin();
 
 		driver.get("http://localhost:3000/adminpanel");
-		
+
+		// wait for page load
 		Thread.sleep(1000);
 
 		WebElement dropDownList = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[5]/select"));
