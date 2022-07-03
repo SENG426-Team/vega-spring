@@ -10,16 +10,20 @@ import javax.persistence.Table;
 public class SharedSecrets {
 
     @Id
-    private int shared_id;
     private int secret_id;
+    private int shared_id;
     private String sender;
     private String recipient;
+    private String date_shared;
+    private String temp_content;
 
-    public SharedSecrets (int shared_id, int secret_id, String sender, String recipient) {
+    public SharedSecrets (int shared_id, int secret_id, String sender, String recipient, String date_shared, String temp_content) {
         this.shared_id = shared_id;
         this.secret_id = secret_id;
         this.sender = sender;
         this.recipient = recipient;
+        this.date_shared = date_shared;
+        this.temp_content = temp_content;
     }
 
     public SharedSecrets () {
@@ -58,6 +62,22 @@ public class SharedSecrets {
         this.recipient = recipient;
     }
 
+    public String getDate_shared() {
+        return date_shared;
+    }
+
+    public void setDate_shared(String date_shared) {
+        this.date_shared = date_shared;
+    }
+
+    public String getTemp_content() {
+        return temp_content;
+    }
+
+    public void setTemp_content(String content) {
+        this.temp_content = content;
+    }
+
     @Override
     public String toString() {
         return "SharedSecrets{" +
@@ -65,6 +85,7 @@ public class SharedSecrets {
                 ", secret_id='" + secret_id + '\'' +
                 ", sender='" + sender + '\'' +
                 ", recipient='" + recipient + '\'' +
+                ", date_shared='" + date_shared + '\'' +
                 '}';
     }
 }

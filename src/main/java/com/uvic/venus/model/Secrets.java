@@ -13,13 +13,13 @@ public class Secrets {
     private int secret_id;
     private String username;
     private String date_created;
-    private String file_name;
+    private String secret_content;
 
-    public Secrets (int secret_id, String username, String date_created, String file_name) {
+    public Secrets (int secret_id, String username, String date_created, String secret_content) {
         this.secret_id = secret_id;
         this.username = username;
         this.date_created = date_created;
-        this.file_name = file_name;
+        this.secret_content = secret_content;
     }
 
     public Secrets () {
@@ -50,12 +50,12 @@ public class Secrets {
         this.date_created = date_created;
     }
 
-    public String getFile_name() {
-        return this.file_name;
+    public String getSecret_content() {
+        return this.secret_content;
     }
 
-    public void setFile_name(String file_name) {
-        this.file_name = file_name;
+    public void setSecret_content(String secret_content) {
+        this.secret_content = secret_content;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class Secrets {
                 "secret_id='" + secret_id + '\'' +
                 ", username='" + username + '\'' +
                 ", date_created='" + date_created + '\'' +
-                ", file_name='" + file_name + '\'' +
+                ", secret_content='" + secret_content + '\'' +
                 '}';
     }
 }
