@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS shared_secrets;
+DROP TABLE IF EXISTS secret_keys;
 DROP TABLE IF EXISTS secrets;
 DROP TABLE IF EXISTS authorities;
 DROP TABLE IF EXISTS userinfo;
