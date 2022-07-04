@@ -36,10 +36,10 @@ class VenusApplicationTests {
 
 		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/chromedriver";
 
-		System.setProperty("webdriver.chrome.driver", path); // TODO: Probably need to use relative path and move chromedriver into project folder
+		System.setProperty("webdriver.chrome.driver", path);
 
 		driver = new ChromeDriver();
-		driver.get("http://localhost:3000"); // TODO: Figure out if url needs to be changed for production
+		driver.get("http://localhost:3000");
 	}
 
 	public void logout() {
@@ -147,6 +147,8 @@ class VenusApplicationTests {
 		submitButton.click();
 	}
 
+	/* Feature: Changing User Roles */
+
 	/* Scenario: Admin wants to change a registered user of type User to type Staff */
 	@Test
 	@Order(1)
@@ -243,6 +245,7 @@ class VenusApplicationTests {
 
 		logout();
 	}
+
 	/* Feature: Vega Vault */
 
 	/* Scenario: User wants to create a secret */
@@ -354,9 +357,8 @@ class VenusApplicationTests {
 		assertTrue(driver.findElements(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]")).isEmpty());
 
 	}
-	 //////////////////////////////
+
 	/* Feature: Resource Upload */
-   //////////////////////////////
 
 	/* Scenario: Admin want to upload a resource */
 	@Test
@@ -456,9 +458,7 @@ class VenusApplicationTests {
 		logout();
 	}
 
-	 //////////////////////////////
 	/* Feature: Account Creation */
-   //////////////////////////////
 
    /* Scenario: New user creates an account and once registered their account appears in the admin pannel */
    @Test
@@ -599,6 +599,7 @@ class VenusApplicationTests {
 
 	}
 
+	/* User cannot login if they have not created an account */
 	@Test
 	@Order(17)
 	void userCannotLoginWithoutRegistration() throws InterruptedException {
