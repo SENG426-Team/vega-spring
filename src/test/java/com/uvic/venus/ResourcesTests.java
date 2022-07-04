@@ -29,7 +29,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
-// This file includes test cases related to the Admin change role feature
+// This file includes test cases related to the Resources Feature
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
@@ -103,11 +103,12 @@ class ResourcesTests {
 		WebElement resourcesPage = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[1]/nav[2]/div/div/a[4]"));
 		resourcesPage.click();
 
+		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/test_file.txt";
+        
+		WebElement uploadElement = driver.findElement(By.id("formFile"));
+        	uploadElement.sendKeys(path); 
 
-        WebElement uploadElement = driver.findElement(By.id("formFile"));
-        uploadElement.sendKeys(""); //HERE YOU NEED TO ADD THE ABSOLUTE PATH OF THE FILE
-
-        WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
+        	WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
 		submitFile.click();
 
 		//wait for submit button
@@ -137,10 +138,12 @@ class ResourcesTests {
 		WebElement resourcesPage = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[1]/nav[2]/div/div/a[4]"));
 		resourcesPage.click();
         
-        WebElement uploadElement = driver.findElement(By.id("formFile"));
-        uploadElement.sendKeys("/Users/isabellarojas/desktop/cor.pdf");  //HERE YOU NEED TO ADD THE ABSOLUTE PATH OF THE FILE
+        	String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/corrupted_file.txt";
+		
+		WebElement uploadElement = driver.findElement(By.id("formFile"));
+        	uploadElement.sendKeys(path);  
 
-        WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
+        	WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
 		submitFile.click();
 
 		//wait for submit button
@@ -170,7 +173,7 @@ class ResourcesTests {
 		resourcesPage.click();
 			
 		WebElement uploadElement = driver.findElement(By.id("formFile"));
-		uploadElement.sendKeys("/Users/isabellarojas/downloads/chromedriver"); //HERE YOU NEED TO ADD THE ABSOLUTE PATH OF THE FILE
+		uploadElement.sendKeys("/Users/isabellarojas/downloads/chromedriver"); //change to chromedriver path
 	
 		WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
 		submitFile.click();
