@@ -87,22 +87,6 @@ class ResourcesTests {
 		Thread.sleep(1000);
 	}
 
-	public void staffLogin() throws InterruptedException {
-
-		driver.get("http://localhost:3000/login");
-
-		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
-		usernameInputBox.sendKeys("jonoliver@venus.com");
-
-		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
-		passwordInputBox.sendKeys("pass");
-
-		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
-		submitButton.click();
-
-		// Wait for page load
-		Thread.sleep(1000);
-	}
 
 	/* Scenario: User can upload a resources */
 	@Test
