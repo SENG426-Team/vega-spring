@@ -17,9 +17,11 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
@@ -188,7 +190,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin want to change it's role to user */
 	@Test
-	@Order(2)
+	@Order(3)
 	void AdminCannotChangeAdminRole() throws InterruptedException {
 
 		adminLogin();
@@ -197,20 +199,22 @@ class VenusApplicationTests {
 		
 		Thread.sleep(1000);
 
-		WebElement dropDownList = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[4]/select"));
+		WebElement dropDownList = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[1]/td[5]/select"));
 		dropDownList.click();
 
-		WebElement userListItem = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[4]/select/option[3]"));
+		WebElement userListItem = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[1]/td[5]/select/option[2]"));
 		userListItem.click();
 
-		Thread.sleep(3000);
+		Thread.sleep(1000);
+
+		driver.switchTo().alert().accept();
 
 		logout();
 	}
 
 	/* Scenario: User wants to change another users role */
 	@Test
-	@Order(3)
+	@Order(4)
 	void UserCannotChangeRole() throws InterruptedException {
 
 		userLogin();
@@ -226,7 +230,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Staff wants to change another users role */
 	@Test
-	@Order(4)
+	@Order(5)
 	void StaffCannotChangeRole() throws InterruptedException {
 
 		staffLogin();
@@ -420,7 +424,7 @@ class VenusApplicationTests {
 
 	/* Scenario: staff can view a list of resources uploaded by an admin */
 	@Test
-	@Order(4)
+	@Order(12)
 	void viewListOfResources() throws InterruptedException {
 
 		staffLogin();
@@ -438,7 +442,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User without sufficient permissions wants to access resource upload */
 	@Test
-	@Order(12)
+	@Order(13)
 	void UserCannotAccessResourceUpload() throws InterruptedException {
 
 		userLogin();
@@ -450,6 +454,172 @@ class VenusApplicationTests {
 		assertFalse(navElements.contains("Resources"));
 
 		logout();
+	}
+
+	 //////////////////////////////
+	/* Feature: Account Creation */
+   //////////////////////////////
+
+   /* Scenario: New user creates an account and once registered their account appears in the admin pannel */
+   @Test
+   @Order(14)
+   void UserCreatesAccount() throws InterruptedException {
+
+   		driver.get("http://localhost:3000/registeraccount");
+
+		WebElement firstNameInputBox = driver.findElement(By.xpath("//*[@id='formfirstname']"));
+		firstNameInputBox.sendKeys("John");
+
+		WebElement lastNameInputBox = driver.findElement(By.xpath("//*[@id='formlastname']"));
+		lastNameInputBox.sendKeys("Smith");	
+
+		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='formUsername']"));
+		usernameInputBox.sendKeys("johnsmith@venus.com");	
+
+		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='formPassword']"));
+		passwordInputBox.sendKeys("pass");	
+
+		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
+		submitButton.click();	
+
+		Thread.sleep(1000);
+
+		logout();
+
+		adminLogin();
+
+		driver.get("http://localhost:3000/adminpanel");
+
+		Thread.sleep(1000);
+
+		WebElement addedUser = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[13]/td[3]"));		
+		
+		assertTrue(addedUser.getText().toString().equals("johnsmith@venus.com"));
+
+		logout();
+
+   }
+
+   /* User cannot login to the plateform if they have not been enabled by an admin */
+   @Test
+   @Order(15)
+   void UserCannotLoginIfNotEnabled() throws InterruptedException {
+
+	driver.get("http://localhost:3000/registeraccount");
+
+	WebElement firstNameInputBox = driver.findElement(By.xpath("//*[@id='formfirstname']"));
+	firstNameInputBox.sendKeys("John");
+
+	WebElement lastNameInputBox = driver.findElement(By.xpath("//*[@id='formlastname']"));
+	lastNameInputBox.sendKeys("Smith");	
+
+	WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='formUsername']"));
+	usernameInputBox.sendKeys("johnsmith@venus.com");	
+
+	WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='formPassword']"));
+	passwordInputBox.sendKeys("pass");	
+
+	WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
+	submitButton.click();	
+
+	Thread.sleep(1000);
+
+	driver.get("http://localhost:3000/login");
+
+	WebElement usernameInputBox1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
+	usernameInputBox1.sendKeys("johnsmith@venus.com");
+
+	WebElement passwordInputBox1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
+	passwordInputBox1.sendKeys("pass");
+
+	WebElement submitButton1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
+	submitButton1.click();
+
+	WebElement errorMessage = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div[2]/p"));			
+
+	assertTrue(errorMessage.getText().toString().equals("The Current User Is Not Enabled"));
+
+   }
+
+	/* User can login to the plateform if they have been enabled by an admin */
+	@Test
+	@Order(16)
+	void UserCanLoginIfEnabled() throws InterruptedException {
+
+		driver.get("http://localhost:3000/registeraccount");
+
+		WebElement firstNameInputBox = driver.findElement(By.xpath("//*[@id='formfirstname']"));
+		firstNameInputBox.sendKeys("John");
+
+		WebElement lastNameInputBox = driver.findElement(By.xpath("//*[@id='formlastname']"));
+		lastNameInputBox.sendKeys("Smith");	
+
+		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='formUsername']"));
+		usernameInputBox.sendKeys("johnsmith@venus.com");	
+
+		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='formPassword']"));
+		passwordInputBox.sendKeys("pass");	
+
+		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
+		submitButton.click();	
+
+		Thread.sleep(1000);
+
+		adminLogin();
+
+		driver.get("http://localhost:3000/adminpanel");
+
+		Thread.sleep(1000);
+
+		WebElement enableUser = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[13]/td[4]/a"));	
+
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+
+		jse.executeScript("arguments[0].scrollIntoView()", enableUser); 
+
+		Thread.sleep(1000);
+		
+		enableUser.click();
+
+		logout();
+
+		driver.get("http://localhost:3000/login");
+
+		WebElement usernameInputBox1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
+		usernameInputBox1.sendKeys("johnsmith@venus.com");
+
+		WebElement passwordInputBox1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
+		passwordInputBox1.sendKeys("pass");
+
+		WebElement submitButton1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
+		submitButton1.click();
+
+		// Wait for page load
+		Thread.sleep(3000);
+
+	}
+
+	@Test
+	@Order(17)
+	void userCannotLoginWithoutRegistration() throws InterruptedException {
+
+		driver.get("http://localhost:3000/login");
+
+		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
+		usernameInputBox.sendKeys("Not a registered user");
+
+		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
+		passwordInputBox.sendKeys("pass");
+
+		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
+		submitButton.click();
+
+		WebElement errorMessage = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div[2]/p"));			
+
+		Thread.sleep(1000);
+
+		assertTrue(errorMessage.getText().toString().equals("Authentication Error: Username and/or Password is Incorrect"));
+		
 	}
 
 
