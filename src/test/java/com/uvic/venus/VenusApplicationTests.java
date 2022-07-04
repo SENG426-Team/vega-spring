@@ -23,8 +23,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
-// This file includes test cases related to the Admin change role feature
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class VenusApplicationTests {
@@ -81,6 +79,23 @@ class VenusApplicationTests {
 		Thread.sleep(1000);
 	}
 
+	public void user2Login() throws InterruptedException {
+
+		driver.get("http://localhost:3000/login");
+
+		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
+		usernameInputBox.sendKeys("testuser2@venus.com");
+
+		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[2]/input"));
+		passwordInputBox.sendKeys("pass");
+
+		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
+		submitButton.click();
+
+		// Wait for page load
+		Thread.sleep(1000);
+	}
+
 	public void staffLogin() throws InterruptedException {
 
 		driver.get("http://localhost:3000/login");
@@ -96,6 +111,35 @@ class VenusApplicationTests {
 
 		// Wait for page load
 		Thread.sleep(1000);
+	}
+
+	public void createSecret() throws InterruptedException {
+
+		driver.get("http://localhost:3000/vegavault");
+
+		WebElement createScecretInputBox = driver.findElement(By.xpath("//*[@id='formSecret']"));
+		createScecretInputBox.sendKeys("secret 1");
+
+		WebElement createSecretButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[1]/div/button"));
+		createSecretButton.click();
+
+		Thread.sleep(1000);
+
+	}
+
+	public void shareSecret() throws InterruptedException {
+		
+		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='formUsername']"));
+		usernameInputBox.sendKeys("testuser2@venus.com");
+
+		WebElement secretID = driver.findElement(By.xpath("//*[@id='formShareID']/option[2]"));
+		secretID.click();
+
+		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/div/div/button"));	
+		
+		Thread.sleep(1000);		
+		
+		submitButton.click();
 	}
 
 	/* Scenario: Admin wants to change a registered user of type User to type Staff */
@@ -187,56 +231,117 @@ class VenusApplicationTests {
 		logout();
 	}
 
-		/* Scenario:  User wants to create a secret */
-		@Test
-		@Order(6)
-		void vegaVaultSecretCreation() throws InterruptedException {
-	
-			userLogin();
+	/* Feature: Vega Vault */
 
-			driver.get("http://localhost:3000/vegavault");
+	/* Scenario: User wants to create a secret */
+	@Test
+	@Order(6)
+	void vegaVaultSecretCreation() throws InterruptedException {
 
-			WebElement createScecretInputBox = driver.findElement(By.xpath("//*[@id='formSecret']"));
-			createScecretInputBox.sendKeys("secret 1");
+		userLogin();
 
-			WebElement createSecretButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[1]/div/button"));
-			createSecretButton.click();
+		createSecret();
 
-			Thread.sleep(1000);
+		WebElement secret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[2]"));			
 
-			WebElement secret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[2]"));			
+		assertTrue(secret.getText().toString().equals("secret 1"));
 
-			assertTrue(secret.getText().toString().equals("secret 1"));
-	
-			logout();
-		}
+		logout();
+	}
 
-		@Test
-		@Order(7)
-		void vegaVaultSecretDeletion() throws InterruptedException {
+	/* Scenario: User wants to delete a secret */
+	@Test
+	@Order(7)
+	void vegaVaultSecretDeletion() throws InterruptedException {
 
-			userLogin();
+		userLogin();
 
-			driver.get("http://localhost:3000/vegavault");
+		createSecret();
 
-			WebElement createScecretInputBox = driver.findElement(By.xpath("//*[@id='formSecret']"));
-			createScecretInputBox.sendKeys("secret 2");
+		WebElement deleteButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[4]/button"));			
+		deleteButton.click();
 
-			WebElement createSecretButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[1]/div/button"));
-			createSecretButton.click();
+		Thread.sleep(1000);
 
-			Thread.sleep(1000);
+		// check that secret has been deleted
+		assertTrue(driver.findElements(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[2]")).isEmpty());
 
-			WebElement deleteButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[4]/button"));			
-			deleteButton.click();
+		logout();
 
-			Thread.sleep(1000);
-	
-			assertTrue(driver.findElements(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[2]")).isEmpty());
+	}
 
-			logout();
+	/* Scenario: User wants to share a secret with another user */
+	@Test
+	@Order(8)
+	void vegaVaultSecretSharing() throws InterruptedException {
 
-		}
+		userLogin();
+
+		createSecret();
+
+		shareSecret();
+
+		logout();
+
+		user2Login();
+
+		driver.get("http://localhost:3000/vegavault");
+
+		Thread.sleep(1000);
+
+		WebElement sharedSecret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]"));			
+
+		assertTrue(sharedSecret.getText().toString().equals("secret 1"));
+
+		logout();
+
+	}
+
+	/* Scenario: User wants to delete shared secret */
+	@Test
+	@Order(9)
+	void vegaVaultSecretSharingThenDeleting() throws InterruptedException {
+
+		userLogin();
+
+		createSecret();
+
+		shareSecret();
+
+		logout();
+
+		user2Login();
+
+		driver.get("http://localhost:3000/vegavault");
+
+		Thread.sleep(1000);		
+
+		WebElement sharedSecret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]"));			
+
+		assertTrue(sharedSecret.getText().toString().equals("secret 1"));
+
+		logout();
+
+		userLogin();
+
+		driver.get("http://localhost:3000/vegavault");
+
+		Thread.sleep(1000);	
+
+		WebElement deleteButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[4]/button"));		
+		
+		deleteButton.click();
+
+		logout();
+
+		user2Login();
+
+		driver.get("http://localhost:3000/vegavault");
+
+		// check that shared secret has been deleted
+		assertTrue(driver.findElements(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]")).isEmpty());
+
+	}
 
 	@AfterAll
 	void tearDown() throws InterruptedException{
