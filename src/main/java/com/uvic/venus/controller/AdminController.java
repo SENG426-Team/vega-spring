@@ -1,7 +1,9 @@
 package com.uvic.venus.controller;
 
+import com.uvic.venus.model.RegisterUserInfo;
 import com.uvic.venus.model.UserInfo;
 import com.uvic.venus.repository.UserInfoDAO;
+import com.uvic.venus.repository.RegisterUserInfoDAO;
 import com.uvic.venus.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -40,6 +42,9 @@ public class AdminController {
 
     @Autowired
     StorageService storageService;
+
+    @Autowired
+    RegisterUserInfoDAO registerUserInfoDAO;
 
     @RequestMapping(value = "/fetchusers", method = RequestMethod.GET)
     public ResponseEntity<?> fetchAllUsers(){
@@ -86,4 +91,13 @@ public class AdminController {
         return ResponseEntity.ok("File uploaded Successfully");
     }
 
+
+
+    @PostMapping(value = "/adduser")
+    public ResponseEntity<?> addUser(@RequestParam String username, @RequestParam String password){
+        RegisterUserInfo newUser = new RegisterUserInfo(username, "FIRSTNAME", "LASTNAME", password);
+
+        registerUserInfoDAO.save(newUser);
+        return ResponseEntity.ok("User Added Successfully");
+    }
 }
