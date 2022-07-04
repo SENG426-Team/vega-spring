@@ -171,9 +171,11 @@ class ResourcesTests {
 	
 		WebElement resourcesPage = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[1]/nav[2]/div/div/a[4]"));
 		resourcesPage.click();
-			
+		
+		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/chromedriver";
+		
 		WebElement uploadElement = driver.findElement(By.id("formFile"));
-		uploadElement.sendKeys("/Users/isabellarojas/downloads/chromedriver"); //change to chromedriver path
+		uploadElement.sendKeys(path);
 	
 		WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
 		submitFile.click();
