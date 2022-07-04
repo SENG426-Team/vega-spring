@@ -31,8 +31,11 @@ class VenusApplicationTests {
 
 	@BeforeAll
     void setUp() {
-		System.setProperty("webdriver.chrome.driver",
-		"//Users/owner/Downloads/chromedriver"); // TODO: Probably need to use relative path and move chromedriver into project folder?
+
+		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/chromedriver";
+
+		System.setProperty("webdriver.chrome.driver", path); // TODO: Probably need to use relative path and move chromedriver into project folder
+
 		driver = new ChromeDriver();
 		driver.get("http://localhost:3000"); // TODO: Figure out if url needs to be changed for production
 	}
@@ -183,6 +186,28 @@ class VenusApplicationTests {
 		logout();
 	}
 
+	/* Scenario: Admin want to change it's role to user */
+	@Test
+	@Order(2)
+	void AdminCannotChangeAdminRole() throws InterruptedException {
+
+		adminLogin();
+
+		driver.get("http://localhost:3000/adminpanel");
+		
+		Thread.sleep(1000);
+
+		WebElement dropDownList = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[4]/select"));
+		dropDownList.click();
+
+		WebElement userListItem = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[4]/select/option[3]"));
+		userListItem.click();
+
+		Thread.sleep(3000);
+
+		logout();
+	}
+
 	/* Scenario: User wants to change another users role */
 	@Test
 	@Order(3)
@@ -214,23 +239,6 @@ class VenusApplicationTests {
 
 		logout();
 	}
-
-	/* Scenario:  User wants to access resource upload */
-	@Test
-	@Order(5)
-	void UserCannotAccessResourceUpload() throws InterruptedException {
-
-		userLogin();
-
-		WebElement navBar = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div"));
-
-		ArrayList<String> navElements = new ArrayList<String>(Arrays.asList(navBar.getText().split("\n")));
-
-		assertFalse(navElements.contains("Resources"));
-
-		logout();
-	}
-
 	/* Feature: Vega Vault */
 
 	/* Scenario: User wants to create a secret */
@@ -342,6 +350,108 @@ class VenusApplicationTests {
 		assertTrue(driver.findElements(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]")).isEmpty());
 
 	}
+	 //////////////////////////////
+	/* Feature: Resource Upload */
+   //////////////////////////////
+
+	/* Scenario: Admin want to upload a resource */
+	@Test
+	@Order(10)
+	void UploadResource() throws InterruptedException {
+
+		adminLogin();
+
+		// wait for page load
+		Thread.sleep(1000);
+
+		driver.get("http://localhost:3000/resources");
+
+		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/test_file.txt";
+
+		WebElement uploadElement = driver.findElement(By.id("formFile"));
+        uploadElement.sendKeys(path); 
+
+        WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
+		submitFile.click();
+
+		//wait for submit button
+		Thread.sleep(1000);
+
+		driver.navigate().refresh();
+
+		//wait for refreshing page
+		Thread.sleep(2000);
+
+		logout();
+
+	}
+
+	/* Scenario: User cannot Upload a Resource of an Unaccepted format */
+	@Test
+	@Order(11)
+	void UnacceptedFormat() throws InterruptedException {
+
+		adminLogin();
+
+		// wait for page load
+		Thread.sleep(1000);
+
+		driver.get("http://localhost:3000/resources");
+
+		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/chromedriver";
+
+		WebElement uploadElement = driver.findElement(By.id("formFile"));
+		uploadElement.sendKeys(path);
+
+		WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
+		submitFile.click();
+
+		//wait for submit button
+		Thread.sleep(1000);
+
+		driver.navigate().refresh();
+
+		//wait for refreshing page
+		Thread.sleep(2000);
+
+		logout();
+
+	}
+
+	/* Scenario: staff can view a list of resources uploaded by an admin */
+	@Test
+	@Order(4)
+	void viewListOfResources() throws InterruptedException {
+
+		staffLogin();
+
+		// wait for page load
+		Thread.sleep(1000);
+
+		driver.get("http://localhost:3000/resources");
+
+		Thread.sleep(1000);
+
+		logout();
+
+	}
+
+	/* Scenario: User without sufficient permissions wants to access resource upload */
+	@Test
+	@Order(12)
+	void UserCannotAccessResourceUpload() throws InterruptedException {
+
+		userLogin();
+
+		WebElement navBar = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[1]/nav[2]/div/div"));
+
+		ArrayList<String> navElements = new ArrayList<String>(Arrays.asList(navBar.getText().split("\n")));
+
+		assertFalse(navElements.contains("Resources"));
+
+		logout();
+	}
+
 
 	@AfterAll
 	void tearDown() throws InterruptedException{
