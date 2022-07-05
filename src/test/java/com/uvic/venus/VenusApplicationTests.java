@@ -152,7 +152,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin wants to change a registered user of type User to type Staff */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(1)
 	void AdminCanChangeRoletoStaff() throws InterruptedException {
 
@@ -174,7 +174,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin wants to change a registered user of type Staff to type User */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(2)
 	void AdminCanChangeRoletoUser() throws InterruptedException {
 
@@ -195,7 +195,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin want to change it's role to user */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(3)
 	void AdminCannotChangeAdminRole() throws InterruptedException {
 
@@ -220,7 +220,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to change another users role */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(4)
 	void UserCannotChangeRole() throws InterruptedException {
 
@@ -237,7 +237,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Staff wants to change another users role */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(5)
 	void StaffCannotChangeRole() throws InterruptedException {
 
@@ -256,7 +256,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to create a secret */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(6)
 	void vegaVaultSecretCreation() throws InterruptedException {
 
@@ -273,7 +273,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to delete a secret */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(7)
 	void vegaVaultSecretDeletion() throws InterruptedException {
 
@@ -295,7 +295,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to share a secret with another user */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(8)
 	void vegaVaultSecretSharing() throws InterruptedException {
 
@@ -323,7 +323,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to delete shared secret */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(9)
 	void vegaVaultSecretSharingThenDeleting() throws InterruptedException {
 
@@ -372,7 +372,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin want to upload a resource */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(10)
 	void UploadResource() throws InterruptedException {
 
@@ -405,7 +405,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User cannot Upload a Resource of an Unaccepted format */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(11)
 	void UnacceptedFormat() throws InterruptedException {
 
@@ -438,7 +438,7 @@ class VenusApplicationTests {
 
 	/* Scenario: staff can view a list of resources uploaded by an admin */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(12)
 	void viewListOfResources() throws InterruptedException {
 
@@ -457,7 +457,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User without sufficient permissions wants to access resource upload */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(13)
 	void UserCannotAccessResourceUpload() throws InterruptedException {
 
@@ -476,7 +476,7 @@ class VenusApplicationTests {
 
    /* Scenario: New user creates an account and once registered their account appears in the admin pannel */
    @Test
-   @ExcludeTags("Integration")
+   @Tag("Integration")
    @Order(14)
    void UserCreatesAccount() throws InterruptedException {
 
@@ -517,7 +517,7 @@ class VenusApplicationTests {
 
    /* User cannot login to the plateform if they have not been enabled by an admin */
    @Test
-   @ExcludeTags("Integration")
+   @Tag("Integration")
    @Order(15)
    void UserCannotLoginIfNotEnabled() throws InterruptedException {
 
@@ -559,7 +559,7 @@ class VenusApplicationTests {
 
 	/* User can login to the plateform if they have been enabled by an admin */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(16)
 	void UserCanLoginIfEnabled() throws InterruptedException {
 
@@ -618,7 +618,7 @@ class VenusApplicationTests {
 
 	/* User cannot login if they have not created an account */
 	@Test
-	@ExcludeTags("Integration")
+	@Tag("Integration")
 	@Order(17)
 	void userCannotLoginWithoutRegistration() throws InterruptedException {
 
