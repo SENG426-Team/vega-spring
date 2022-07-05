@@ -1,13 +1,18 @@
 package com.uvic.venus;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,6 +21,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
@@ -25,9 +31,9 @@ class VenusApplicationTests {
 
 	WebDriver driver;
 
-    @BeforeAll
+	@BeforeAll
     void setUp() {
-		
+
 		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/chromedriver";
 
 		System.setProperty("webdriver.chrome.driver", path);
