@@ -41,9 +41,9 @@ class VenusApplicationTests {
 		System.setProperty("webdriver.chrome.driver", path);
 
 		ChromeOptions chrome_options = new ChromeOptions();
+	    	chrome_options.addArguments("--no-sandbox");
 		chrome_options.addArguments("--headless");
 		chrome_options.addArguments("--disable-dev-shm-usage");
-		chrome_options.addArguments("--no-sandbox");
 		driver = new ChromeDriver();
 		driver.get("https://venus-app.azurewebsites.net");
 	}
