@@ -22,6 +22,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -39,6 +40,10 @@ class VenusApplicationTests {
 
 		System.setProperty("webdriver.chrome.driver", path);
 
+		ChromeOptions chrome_options = new ChromeOptions();
+		chrome_options.addArguments("--headless");
+		chrome_options.addArguments("--disable-dev-shm-usage");
+		chrome_options.addArguments("--no-sandbox");
 		driver = new ChromeDriver();
 		driver.get("https://venus-app.azurewebsites.net");
 	}
