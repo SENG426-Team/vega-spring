@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.Tags;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -44,7 +45,7 @@ class VenusApplicationTests {
 
 	public void logout() {
 
-		driver.get("http://localhost:3000/account");		
+		driver.get("http://localhost:3000/account");
 
 		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
 		submitButton.click();
@@ -133,17 +134,17 @@ class VenusApplicationTests {
 	}
 
 	public void shareSecret() throws InterruptedException {
-		
+
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='formUsername']"));
 		usernameInputBox.sendKeys("testuser2@venus.com");
 
 		WebElement secretID = driver.findElement(By.xpath("//*[@id='formShareID']/option[2]"));
 		secretID.click();
 
-		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/div/div/button"));	
-		
-		Thread.sleep(1000);		
-		
+		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/div/div/button"));
+
+		Thread.sleep(1000);
+
 		submitButton.click();
 	}
 
@@ -151,6 +152,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin wants to change a registered user of type User to type Staff */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(1)
 	void AdminCanChangeRoletoStaff() throws InterruptedException {
 
@@ -172,13 +174,14 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin wants to change a registered user of type Staff to type User */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(2)
 	void AdminCanChangeRoletoUser() throws InterruptedException {
 
 		adminLogin();
 
 		driver.get("http://localhost:3000/adminpanel");
-		
+
 		Thread.sleep(1000);
 
 		WebElement dropDownList = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[2]/td[5]/select"));
@@ -192,13 +195,14 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin want to change it's role to user */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(3)
 	void AdminCannotChangeAdminRole() throws InterruptedException {
 
 		adminLogin();
 
 		driver.get("http://localhost:3000/adminpanel");
-		
+
 		Thread.sleep(1000);
 
 		WebElement dropDownList = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[1]/td[5]/select"));
@@ -216,6 +220,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to change another users role */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(4)
 	void UserCannotChangeRole() throws InterruptedException {
 
@@ -232,6 +237,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Staff wants to change another users role */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(5)
 	void StaffCannotChangeRole() throws InterruptedException {
 
@@ -250,6 +256,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to create a secret */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(6)
 	void vegaVaultSecretCreation() throws InterruptedException {
 
@@ -257,7 +264,7 @@ class VenusApplicationTests {
 
 		createSecret();
 
-		WebElement secret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[2]"));			
+		WebElement secret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[2]"));
 
 		assertTrue(secret.getText().toString().equals("secret 1"));
 
@@ -266,6 +273,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to delete a secret */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(7)
 	void vegaVaultSecretDeletion() throws InterruptedException {
 
@@ -273,7 +281,7 @@ class VenusApplicationTests {
 
 		createSecret();
 
-		WebElement deleteButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[4]/button"));			
+		WebElement deleteButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[4]/button"));
 		deleteButton.click();
 
 		Thread.sleep(1000);
@@ -287,6 +295,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to share a secret with another user */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(8)
 	void vegaVaultSecretSharing() throws InterruptedException {
 
@@ -304,7 +313,7 @@ class VenusApplicationTests {
 
 		Thread.sleep(1000);
 
-		WebElement sharedSecret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]"));			
+		WebElement sharedSecret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]"));
 
 		assertTrue(sharedSecret.getText().toString().equals("secret 1"));
 
@@ -314,6 +323,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User wants to delete shared secret */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(9)
 	void vegaVaultSecretSharingThenDeleting() throws InterruptedException {
 
@@ -329,9 +339,9 @@ class VenusApplicationTests {
 
 		driver.get("http://localhost:3000/vegavault");
 
-		Thread.sleep(1000);		
+		Thread.sleep(1000);
 
-		WebElement sharedSecret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]"));			
+		WebElement sharedSecret = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]"));
 
 		assertTrue(sharedSecret.getText().toString().equals("secret 1"));
 
@@ -341,10 +351,10 @@ class VenusApplicationTests {
 
 		driver.get("http://localhost:3000/vegavault");
 
-		Thread.sleep(1000);	
+		Thread.sleep(1000);
 
-		WebElement deleteButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[4]/button"));		
-		
+		WebElement deleteButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[4]/button"));
+
 		deleteButton.click();
 
 		logout();
@@ -362,6 +372,7 @@ class VenusApplicationTests {
 
 	/* Scenario: Admin want to upload a resource */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(10)
 	void UploadResource() throws InterruptedException {
 
@@ -375,7 +386,7 @@ class VenusApplicationTests {
 		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/test_file.txt";
 
 		WebElement uploadElement = driver.findElement(By.id("formFile"));
-        uploadElement.sendKeys(path); 
+        uploadElement.sendKeys(path);
 
         WebElement submitFile = driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/div[1]/div/button"));
 		submitFile.click();
@@ -394,6 +405,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User cannot Upload a Resource of an Unaccepted format */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(11)
 	void UnacceptedFormat() throws InterruptedException {
 
@@ -426,6 +438,7 @@ class VenusApplicationTests {
 
 	/* Scenario: staff can view a list of resources uploaded by an admin */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(12)
 	void viewListOfResources() throws InterruptedException {
 
@@ -444,6 +457,7 @@ class VenusApplicationTests {
 
 	/* Scenario: User without sufficient permissions wants to access resource upload */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(13)
 	void UserCannotAccessResourceUpload() throws InterruptedException {
 
@@ -462,6 +476,7 @@ class VenusApplicationTests {
 
    /* Scenario: New user creates an account and once registered their account appears in the admin pannel */
    @Test
+   @ExcludeTags("Integration")
    @Order(14)
    void UserCreatesAccount() throws InterruptedException {
 
@@ -471,16 +486,16 @@ class VenusApplicationTests {
 		firstNameInputBox.sendKeys("John");
 
 		WebElement lastNameInputBox = driver.findElement(By.xpath("//*[@id='formlastname']"));
-		lastNameInputBox.sendKeys("Smith");	
+		lastNameInputBox.sendKeys("Smith");
 
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='formUsername']"));
-		usernameInputBox.sendKeys("johnsmith@venus.com");	
+		usernameInputBox.sendKeys("johnsmith@venus.com");
 
 		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='formPassword']"));
-		passwordInputBox.sendKeys("pass");	
+		passwordInputBox.sendKeys("pass");
 
 		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
-		submitButton.click();	
+		submitButton.click();
 
 		Thread.sleep(1000);
 
@@ -492,8 +507,8 @@ class VenusApplicationTests {
 
 		Thread.sleep(1000);
 
-		WebElement addedUser = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[13]/td[3]"));		
-		
+		WebElement addedUser = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[13]/td[3]"));
+
 		assertTrue(addedUser.getText().toString().equals("johnsmith@venus.com"));
 
 		logout();
@@ -502,6 +517,7 @@ class VenusApplicationTests {
 
    /* User cannot login to the plateform if they have not been enabled by an admin */
    @Test
+   @ExcludeTags("Integration")
    @Order(15)
    void UserCannotLoginIfNotEnabled() throws InterruptedException {
 
@@ -511,16 +527,16 @@ class VenusApplicationTests {
 	firstNameInputBox.sendKeys("John");
 
 	WebElement lastNameInputBox = driver.findElement(By.xpath("//*[@id='formlastname']"));
-	lastNameInputBox.sendKeys("Smith");	
+	lastNameInputBox.sendKeys("Smith");
 
 	WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='formUsername']"));
-	usernameInputBox.sendKeys("johnsmith@venus.com");	
+	usernameInputBox.sendKeys("johnsmith@venus.com");
 
 	WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='formPassword']"));
-	passwordInputBox.sendKeys("pass");	
+	passwordInputBox.sendKeys("pass");
 
 	WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
-	submitButton.click();	
+	submitButton.click();
 
 	Thread.sleep(1000);
 
@@ -535,7 +551,7 @@ class VenusApplicationTests {
 	WebElement submitButton1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
 	submitButton1.click();
 
-	WebElement errorMessage = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div[2]/p"));			
+	WebElement errorMessage = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div[2]/p"));
 
 	assertTrue(errorMessage.getText().toString().equals("The Current User Is Not Enabled"));
 
@@ -543,6 +559,7 @@ class VenusApplicationTests {
 
 	/* User can login to the plateform if they have been enabled by an admin */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(16)
 	void UserCanLoginIfEnabled() throws InterruptedException {
 
@@ -552,16 +569,16 @@ class VenusApplicationTests {
 		firstNameInputBox.sendKeys("John");
 
 		WebElement lastNameInputBox = driver.findElement(By.xpath("//*[@id='formlastname']"));
-		lastNameInputBox.sendKeys("Smith");	
+		lastNameInputBox.sendKeys("Smith");
 
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='formUsername']"));
-		usernameInputBox.sendKeys("johnsmith@venus.com");	
+		usernameInputBox.sendKeys("johnsmith@venus.com");
 
 		WebElement passwordInputBox = driver.findElement(By.xpath("//*[@id='formPassword']"));
-		passwordInputBox.sendKeys("pass");	
+		passwordInputBox.sendKeys("pass");
 
 		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
-		submitButton.click();	
+		submitButton.click();
 
 		Thread.sleep(1000);
 
@@ -571,14 +588,14 @@ class VenusApplicationTests {
 
 		Thread.sleep(1000);
 
-		WebElement enableUser = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[13]/td[4]/a"));	
+		WebElement enableUser = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/table/tbody/tr[13]/td[4]/a"));
 
 		JavascriptExecutor jse = (JavascriptExecutor)driver;
 
-		jse.executeScript("arguments[0].scrollIntoView()", enableUser); 
+		jse.executeScript("arguments[0].scrollIntoView()", enableUser);
 
 		Thread.sleep(1000);
-		
+
 		enableUser.click();
 
 		logout();
@@ -601,6 +618,7 @@ class VenusApplicationTests {
 
 	/* User cannot login if they have not created an account */
 	@Test
+	@ExcludeTags("Integration")
 	@Order(17)
 	void userCannotLoginWithoutRegistration() throws InterruptedException {
 
@@ -615,12 +633,12 @@ class VenusApplicationTests {
 		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/button"));
 		submitButton.click();
 
-		WebElement errorMessage = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div[2]/p"));			
+		WebElement errorMessage = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div[2]/p"));
 
 		Thread.sleep(1000);
 
 		assertTrue(errorMessage.getText().toString().equals("Authentication Error: Username and/or Password is Incorrect"));
-		
+
 	}
 
 
