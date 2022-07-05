@@ -291,7 +291,7 @@ class Milestone3Tests(unittest.TestCase):
 
         self.driver.get("https://venus-app.azurewebsites.net/resources")
 
-        path = os.getcwd()+"/src/test/java/com/uvic/venus/test_file.txt"
+        path = os.getcwd()+"\\src\\test\\java\\com\\uvic\\venus\\test_file.txt"
 
         uploadElement = self.driver.find_element(By.ID, "formFile")
         uploadElement.send_keys(path)
@@ -318,7 +318,7 @@ class Milestone3Tests(unittest.TestCase):
 
         self.driver.get("https://venus-app.azurewebsites.net/resources")
 
-        path = os.getcwd()+"/src/test/java/com/uvic/venus/chromedriver"
+        path = os.getcwd()+"\\src\\test\\java\\com\\uvic\\venus\\chromedriver"
 
         uploadElement = self.driver.find_element(By.ID, "formFile")
         uploadElement.send_keys(path)
