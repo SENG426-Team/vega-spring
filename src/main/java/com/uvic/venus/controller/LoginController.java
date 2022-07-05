@@ -84,7 +84,12 @@ public class LoginController {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        //User user1 = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()), authorities);
+        // Before Building the user, Check for Username Availability
+        List<UserInfo> existing_username = userInfoDAO.findUserInfoByUsername(user.getUsername());
+        if (existing_username.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username is not available");
+        }
+
         User.UserBuilder builder = User.builder();
         builder.disabled(true);
         builder.passwordEncoder(passwordEncoder::encode);
