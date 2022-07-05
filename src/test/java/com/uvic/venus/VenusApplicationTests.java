@@ -40,12 +40,12 @@ class VenusApplicationTests {
 		System.setProperty("webdriver.chrome.driver", path);
 
 		driver = new ChromeDriver();
-		driver.get("http://localhost:3000");
+		driver.get("https://venus-app.azurewebsites.net");
 	}
 
 	public void logout() {
 
-		driver.get("http://localhost:3000/account");
+		driver.get("https://venus-app.azurewebsites.net/account");
 
 		WebElement submitButton = driver.findElement(By.xpath("//*[@id='root']/div/div[1]/div[2]/div/div/button"));
 		submitButton.click();
@@ -53,7 +53,7 @@ class VenusApplicationTests {
 
 	public void adminLogin() throws InterruptedException {
 
-		driver.get("http://localhost:3000/login");
+		driver.get("https://venus-app.azurewebsites.net/login");
 
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
 		usernameInputBox.sendKeys("admin@venus.com");
@@ -70,7 +70,7 @@ class VenusApplicationTests {
 
 	public void userLogin() throws InterruptedException {
 
-		driver.get("http://localhost:3000/login");
+		driver.get("https://venus-app.azurewebsites.net/login");
 
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
 		usernameInputBox.sendKeys("testuser@venus.com");
@@ -87,7 +87,7 @@ class VenusApplicationTests {
 
 	public void user2Login() throws InterruptedException {
 
-		driver.get("http://localhost:3000/login");
+		driver.get("https://venus-app.azurewebsites.net/login");
 
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
 		usernameInputBox.sendKeys("testuser2@venus.com");
@@ -104,7 +104,7 @@ class VenusApplicationTests {
 
 	public void staffLogin() throws InterruptedException {
 
-		driver.get("http://localhost:3000/login");
+		driver.get("https://venus-app.azurewebsites.net/login");
 
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
 		usernameInputBox.sendKeys("jonoliver@venus.com");
@@ -121,7 +121,7 @@ class VenusApplicationTests {
 
 	public void createSecret() throws InterruptedException {
 
-		driver.get("http://localhost:3000/vegavault");
+		driver.get("https://venus-app.azurewebsites.net/vegavault");
 
 		WebElement createScecretInputBox = driver.findElement(By.xpath("//*[@id='formSecret']"));
 		createScecretInputBox.sendKeys("secret 1");
@@ -158,7 +158,7 @@ class VenusApplicationTests {
 
 		adminLogin();
 
-		driver.get("http://localhost:3000/adminpanel");
+		driver.get("https://venus-app.azurewebsites.net/adminpanel");
 
 		// wait for page load
 		Thread.sleep(1000);
@@ -180,7 +180,7 @@ class VenusApplicationTests {
 
 		adminLogin();
 
-		driver.get("http://localhost:3000/adminpanel");
+		driver.get("https://venus-app.azurewebsites.net/adminpanel");
 
 		Thread.sleep(1000);
 
@@ -201,7 +201,7 @@ class VenusApplicationTests {
 
 		adminLogin();
 
-		driver.get("http://localhost:3000/adminpanel");
+		driver.get("https://venus-app.azurewebsites.net/adminpanel");
 
 		Thread.sleep(1000);
 
@@ -309,7 +309,7 @@ class VenusApplicationTests {
 
 		user2Login();
 
-		driver.get("http://localhost:3000/vegavault");
+		driver.get("https://venus-app.azurewebsites.net/vegavault");
 
 		Thread.sleep(1000);
 
@@ -337,7 +337,7 @@ class VenusApplicationTests {
 
 		user2Login();
 
-		driver.get("http://localhost:3000/vegavault");
+		driver.get("https://venus-app.azurewebsites.net/vegavault");
 
 		Thread.sleep(1000);
 
@@ -349,7 +349,7 @@ class VenusApplicationTests {
 
 		userLogin();
 
-		driver.get("http://localhost:3000/vegavault");
+		driver.get("https://venus-app.azurewebsites.net/vegavault");
 
 		Thread.sleep(1000);
 
@@ -361,7 +361,7 @@ class VenusApplicationTests {
 
 		user2Login();
 
-		driver.get("http://localhost:3000/vegavault");
+		driver.get("https://venus-app.azurewebsites.net/vegavault");
 
 		// check that shared secret has been deleted
 		assertTrue(driver.findElements(By.xpath("//*[@id='root']/div/div[1]/div[2]/div[2]/table/tbody/tr/td[3]")).isEmpty());
@@ -381,7 +381,7 @@ class VenusApplicationTests {
 		// wait for page load
 		Thread.sleep(1000);
 
-		driver.get("http://localhost:3000/resources");
+		driver.get("https://venus-app.azurewebsites.net/resources");
 
 		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/test_file.txt";
 
@@ -414,7 +414,7 @@ class VenusApplicationTests {
 		// wait for page load
 		Thread.sleep(1000);
 
-		driver.get("http://localhost:3000/resources");
+		driver.get("https://venus-app.azurewebsites.net/resources");
 
 		String path = System.getProperty("user.dir")+"/src/test/java/com/uvic/venus/chromedriver";
 
@@ -447,7 +447,7 @@ class VenusApplicationTests {
 		// wait for page load
 		Thread.sleep(1000);
 
-		driver.get("http://localhost:3000/resources");
+		driver.get("https://venus-app.azurewebsites.net/resources");
 
 		Thread.sleep(1000);
 
@@ -480,7 +480,7 @@ class VenusApplicationTests {
    @Order(14)
    void UserCreatesAccount() throws InterruptedException {
 
-   		driver.get("http://localhost:3000/registeraccount");
+   		driver.get("https://venus-app.azurewebsites.net/registeraccount");
 
 		WebElement firstNameInputBox = driver.findElement(By.xpath("//*[@id='formfirstname']"));
 		firstNameInputBox.sendKeys("John");
@@ -503,7 +503,7 @@ class VenusApplicationTests {
 
 		adminLogin();
 
-		driver.get("http://localhost:3000/adminpanel");
+		driver.get("https://venus-app.azurewebsites.net/adminpanel");
 
 		Thread.sleep(1000);
 
@@ -521,7 +521,7 @@ class VenusApplicationTests {
    @Order(15)
    void UserCannotLoginIfNotEnabled() throws InterruptedException {
 
-	driver.get("http://localhost:3000/registeraccount");
+	driver.get("https://venus-app.azurewebsites.net/registeraccount");
 
 	WebElement firstNameInputBox = driver.findElement(By.xpath("//*[@id='formfirstname']"));
 	firstNameInputBox.sendKeys("John");
@@ -540,7 +540,7 @@ class VenusApplicationTests {
 
 	Thread.sleep(1000);
 
-	driver.get("http://localhost:3000/login");
+	driver.get("https://venus-app.azurewebsites.net/login");
 
 	WebElement usernameInputBox1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
 	usernameInputBox1.sendKeys("johnsmith@venus.com");
@@ -563,7 +563,7 @@ class VenusApplicationTests {
 	@Order(16)
 	void UserCanLoginIfEnabled() throws InterruptedException {
 
-		driver.get("http://localhost:3000/registeraccount");
+		driver.get("https://venus-app.azurewebsites.net/registeraccount");
 
 		WebElement firstNameInputBox = driver.findElement(By.xpath("//*[@id='formfirstname']"));
 		firstNameInputBox.sendKeys("John");
@@ -584,7 +584,7 @@ class VenusApplicationTests {
 
 		adminLogin();
 
-		driver.get("http://localhost:3000/adminpanel");
+		driver.get("https://venus-app.azurewebsites.net/adminpanel");
 
 		Thread.sleep(1000);
 
@@ -600,7 +600,7 @@ class VenusApplicationTests {
 
 		logout();
 
-		driver.get("http://localhost:3000/login");
+		driver.get("https://venus-app.azurewebsites.net/login");
 
 		WebElement usernameInputBox1 = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
 		usernameInputBox1.sendKeys("johnsmith@venus.com");
@@ -622,7 +622,7 @@ class VenusApplicationTests {
 	@Order(17)
 	void userCannotLoginWithoutRegistration() throws InterruptedException {
 
-		driver.get("http://localhost:3000/login");
+		driver.get("https://venus-app.azurewebsites.net/login");
 
 		WebElement usernameInputBox = driver.findElement(By.xpath("//*[@id='root']/div/div[2]/div/div/form/div[1]/input"));
 		usernameInputBox.sendKeys("Not a registered user");
