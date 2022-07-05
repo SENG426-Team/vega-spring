@@ -26,7 +26,7 @@ stages:
             mavenPomFile: 'pom.xml'
             publishJUnitResults: true
             testResultsFiles: '**/surefire-reports/TEST-*.xml'
-            testRunTitle: '-Dgroups=\!Integration'
+            options: '-Dgroups=\!Integration'
             javaHomeOption: 'JDKVersion'
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
