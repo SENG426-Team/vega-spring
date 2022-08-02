@@ -40,7 +40,7 @@ stages:
             mavenVersionOption: 'Default'
             mavenAuthenticateFeed: false
             effectivePomSkip: false
-            sonarQubeRunAnalysis: false
+            sonarQubeRunAnalysis: true
         - task: ado-discord-webhook@1
           inputs:
             channelId: '984576484150738944'
