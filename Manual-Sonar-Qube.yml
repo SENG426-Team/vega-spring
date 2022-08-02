@@ -1,0 +1,51 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+resources:
+- repo: self
+
+variables:
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+pool:
+  vmImage: $(vmImageName)
+stages:
+  - stage: Test
+    displayName: Test
+    jobs:
+      - job: Test
+        steps:
+        - task: SonarQubePrepare@5
+          inputs:
+            SonarQube: 'Self-Hosted SonarQube'
+            scannerMode: 'Other'
+            extraProperties: |
+              # Additional properties that will be passed to the scanner,
+              # Put one key=value per line, example:
+              # sonar.exclusions=**/*.bin
+              sonar.projectKey=vega-spring
+        - task: Maven@3
+          inputs:
+            mavenPomFile: 'pom.xml'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            options: '-DexcludedGroups=Integration'
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: true
+        - task: ado-discord-webhook@1
+          inputs:
+            channelId: '984576484150738944'
+            webhookKey: 'BQwMEmgOqbYQfibgD-qk3VFzSPx_MUKy9_CvdbYGGJw0_rSkmM5HOGmWXQVb28MUNAJj'
+            name: 'Azure-Builds'
+            messageType: 'content'
+            content: 'Azure Backend Pipeline Build Failed During The Test and Scan Stage On Develop Branch'
+          condition: failed()
+        - task: SonarQubePublish@5
+          inputs:
+            pollingTimeoutSec: '300'
