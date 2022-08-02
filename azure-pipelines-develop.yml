@@ -21,15 +21,6 @@ stages:
     jobs:
       - job: Test
         steps:
-        - task: SonarQubePrepare@5
-          inputs:
-            SonarQube: 'Self-Hosted SonarQube'
-            scannerMode: 'Other'
-            extraProperties: |
-              # Additional properties that will be passed to the scanner,
-              # Put one key=value per line, example:
-              # sonar.exclusions=**/*.bin
-              sonar.projectKey=vega-spring
         - task: Maven@3
           inputs:
             mavenPomFile: 'pom.xml'
@@ -49,6 +40,3 @@ stages:
             messageType: 'content'
             content: 'Azure Backend Pipeline Build Failed During The Test and Scan Stage On Develop Branch'
           condition: failed()
-        - task: SonarQubePublish@5
-          inputs:
-            pollingTimeoutSec: '300'
