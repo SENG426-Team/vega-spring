@@ -105,11 +105,18 @@ public class VaultController {
 
     // allow share permissions - post
     @RequestMapping(value = "/share_secret", method = RequestMethod.POST)
-    public ResponseEntity<?> shareSecret(@RequestBody SharedSecrets shared_secret) {
+    public ResponseEntity<?> shareSecret(@RequestBody String jsonString) {
 
-        SharedSecrets sharing = new SharedSecrets(common_shared_id, shared_secret.getSecret_id(), 
-                                                  shared_secret.getSender(), shared_secret.getRecipient(), 
-                                                  shared_secret.getDate_shared(), shared_secret.getTemp_content());
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        Map <String, Object> map = parser.parseMap(jsonString);
+
+        // Need to get the necessary fields
+        int secret_id = Integer.parseInt(map.get("secret_id").toString());
+        String sender = map.get("sender").toString();
+        String recipient = map.get("recipient").toString();
+        String date_shared = map.get("date_shared").toString();
+
+        SharedSecrets sharing = new SharedSecrets(common_shared_id, secret_id, sender, recipient, date_shared, "");
         common_shared_id++;
         sharedSecretDAO.save(sharing);
         return ResponseEntity.ok("Secret Shared Successfully");
