@@ -93,7 +93,7 @@ public class AdminController {
         builder.username(userDetails.getUsername());
         builder.password(userDetails.getPassword());
         builder.authorities(authorities);
-        builder.disabled(!userDetails.isEnabled());
+        builder.disabled(false);
 
         manager.updateUser(builder.build());
         return ResponseEntity.ok("User Updated Successfully");
