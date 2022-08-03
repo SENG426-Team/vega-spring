@@ -19,13 +19,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.boot.json.JsonParser;
+import org.springframework.boot.json.JsonParserFactory;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,34 +52,48 @@ public class AdminController {
         return ResponseEntity.ok(userInfoList);
     }
 
-    @RequestMapping(value ="/enableuser", method = RequestMethod.GET)
-    public ResponseEntity<?> enableUserAccount(@RequestParam String username, @RequestParam boolean enable){
+    @RequestMapping(value ="/enableuser", method = RequestMethod.POST)
+    public ResponseEntity<?> enableUserAccount(@RequestBody String jsonString){
+
+        // Parse JSON String to Receive fields 
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        Map <String, Object> data_map = parser.parseMap(jsonString);
+        String username = data_map.get("username").toString();
+
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         UserDetails userDetails = manager.loadUserByUsername(username);
-
         User.UserBuilder builder = User.builder();
         builder.username(userDetails.getUsername());
         builder.password(userDetails.getPassword());
         builder.authorities(userDetails.getAuthorities());
-        builder.disabled(!enable);
+        builder.disabled(false);
 
         manager.updateUser(builder.build());
         return ResponseEntity.ok("User Updated Successfully");
     }
 
-    @RequestMapping(value ="/changerole", method = RequestMethod.GET)
-    public ResponseEntity<?> changeRole(@RequestParam String username, @RequestParam String role){
+    @RequestMapping(value ="/changerole", method = RequestMethod.POST)
+    public ResponseEntity<?> changeRole(@RequestBody String jsonString){
+
+        // Parse JSON String to Receive fields 
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        Map <String, Object> data_map = parser.parseMap(jsonString);
+        String username = data_map.get("username").toString();
+        String role = data_map.get("new_role").toString();
+
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority(role));
 
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         UserDetails userDetails = manager.loadUserByUsername(username);
 
+        // Because the admin is making the decision to change roles,
+        // the user does not need to be re-enabled.
         User.UserBuilder builder = User.builder();
         builder.username(userDetails.getUsername());
         builder.password(userDetails.getPassword());
         builder.authorities(authorities);
-        builder.disabled(userDetails.isEnabled());
+        builder.disabled(false);
 
         manager.updateUser(builder.build());
         return ResponseEntity.ok("User Updated Successfully");
