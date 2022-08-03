@@ -27,7 +27,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
-                .dataSource(dataSource);
+                .dataSource(dataSource)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -48,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.headers().frameOptions().sameOrigin();
+        httpSecurity.headers().contentSecurityPolicy("script-src 'self'");
     }
 
     @Override
