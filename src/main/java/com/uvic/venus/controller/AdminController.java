@@ -72,19 +72,28 @@ public class AdminController {
         return ResponseEntity.ok("User Updated Successfully");
     }
 
-    @RequestMapping(value ="/changerole", method = RequestMethod.GET)
-    public ResponseEntity<?> changeRole(@RequestParam String username, @RequestParam String role){
+    @RequestMapping(value ="/changerole", method = RequestMethod.POST)
+    public ResponseEntity<?> changeRole(@RequestBody String jsonString){
+
+        // Parse JSON String to Receive fields 
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        Map <String, Object> data_map = parser.parseMap(jsonString);
+        String username = data_map.get("username").toString();
+        String role = data_map.get("new_role").toString();
+
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority(role));
 
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         UserDetails userDetails = manager.loadUserByUsername(username);
 
+        // Because the admin is making the decision to change roles,
+        // the user does not need to be re-enabled.
         User.UserBuilder builder = User.builder();
         builder.username(userDetails.getUsername());
         builder.password(userDetails.getPassword());
         builder.authorities(authorities);
-        builder.disabled(userDetails.isEnabled());
+        builder.disabled(!userDetails.isEnabled());
 
         manager.updateUser(builder.build());
         return ResponseEntity.ok("User Updated Successfully");
