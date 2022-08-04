@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.headers().defaultsDisabled().cacheControl();
         httpSecurity.headers().frameOptions().sameOrigin();
-        httpSecurity.headers().contentSecurityPolicy("script-src 'self'");
+        httpSecurity.headers().contentSecurityPolicy("default-src 'self'; frame-ancestors 'none';");
     }
 
     @Override
